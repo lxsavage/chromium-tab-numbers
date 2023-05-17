@@ -4,15 +4,24 @@
   "description": "Add a number to the first nine tabs to assist with keyboard navigation",
   "version": "0.5",
   "permissions": [
-    "tabs"
+    "tabs",
+    "favicon"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "scripts/background.js"
   },
   "content_scripts": [
     {
-      "js": ["content.js"],
-      "matches": ["*://*/*"]
+      "js": ["scripts/content.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_end"
     }
+  ],
+  "web_accessible_resources": [
+      {
+          "resources": ["images/*.png"],
+          "matches": ["<all_urls>"],
+          "extension_ids": ["*"]
+      }
   ]
 }
