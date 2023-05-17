@@ -3,7 +3,7 @@ function setFavicons() {
         .then(tabs => {
             tabs.forEach((tab, index) => {
                 let logicalIndex = index + 1;
-                if (index === tabs.length - 1) {
+                if (tabs.length > 8 && index === tabs.length - 1) {
                     logicalIndex = 9;
                 }
                 else if (index >= 8) return;
