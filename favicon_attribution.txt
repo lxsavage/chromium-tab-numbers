@@ -1,1 +1,3 @@
 Number icons 1-9 from Hight Quality Icons - Flaticon
+
+Modified by Logan Savage (lxsavage) to have a white background behind the number parts of each graphic.
