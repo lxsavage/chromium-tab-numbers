@@ -2,10 +2,10 @@
   "manifest_version": 3,
   "name": "Tab Enumerator",
   "description": "Add a number to the first nine tabs to assist with keyboard navigation",
-  "version": "0.5",
+  "version": "0.1",
   "permissions": [
     "tabs",
-    "favicon"
+    "scripting"
   ],
   "background": {
     "service_worker": "scripts/background.js"
@@ -23,5 +23,8 @@
           "matches": ["<all_urls>"],
           "extension_ids": ["*"]
       }
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ]
 }

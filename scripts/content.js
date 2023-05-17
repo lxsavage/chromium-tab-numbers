@@ -1,5 +1,4 @@
 let ctrlTimer = null;
-let numbersActive = false;
 let origHref = null;
 
 function getFavicons() {
@@ -48,13 +47,15 @@ function unsetFavicon() {
 document.addEventListener('keydown', evt => {
     if (!isCtrlOrCmd(evt.key)) return;
 
-    chrome.runtime.sendMessage('ctrl_held').then(res => numbersActive = res.status);
+    // TODO: Handle context invalidated
+    chrome.runtime.sendMessage('ctrl_held').catch(_ => {});
 });
 
 document.addEventListener('keyup', evt => {
     if (!isCtrlOrCmd(evt.key)) return;
 
-    chrome.runtime.sendMessage('ctrl_released').then(res => numbersActive = res.status);
+    // TODO: Handle context invalidated
+    chrome.runtime.sendMessage('ctrl_released').catch(_ => {});
     clearTimeout(ctrlTimer);
 });
 

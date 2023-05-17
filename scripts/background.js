@@ -1,38 +1,87 @@
 function setFavicons() {
-    chrome.tabs.query({}, tabs => {
-        tabs.forEach((tab, index) => {
-            const icUrl = chrome.runtime.getURL(`images/n${index + 1}.png`);
-            chrome.tabs.sendMessage(tab.id, {action: 'set_favicon', icon: icUrl});
+    chrome.tabs.query({ currentWindow: true })
+        .then(tabs => {
+            tabs.forEach((tab, index) => {
+                let logicalIndex = index + 1;
+                if (index === tabs.length - 1) {
+                    logicalIndex = 9;
+                }
+                else if (index >= 8) return;
+
+                const icUrl = chrome.runtime.getURL(`images/n${logicalIndex}.png`);
+
+                // TODO: Handle context invalidated
+                chrome.tabs.sendMessage(tab.id, {action: 'set_favicon', icon: icUrl})
+                    .then(_ => {
+                        console.log('toggling numbers on');
+                    })
+                    .catch(_ => {});
+            });
+        })
+        .catch(err => {
+            console.error(err);
         });
-    });
 }
 
 function unsetFavicons() {
-    chrome.tabs.query({}, tabs => {
-        tabs.forEach((tab, index) => {
-            chrome.tabs.sendMessage(tab.id, {action: 'unset_favicon'});
+    chrome.tabs.query({})
+        .then(tabs => {
+            for (const tab of tabs) {
+                // TODO: Handle context invalidated
+                chrome.tabs.sendMessage(tab.id, {action: 'unset_favicon'})
+                    .then(_ => {
+                        console.log('toggling numbers off');
+                    })
+                    .catch(_ => {});
+            }
+        })
+        .catch(err => {
+            console.error(err);
         });
-    });
 }
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    switch (msg) {
+// Checking for the user holding CTRL/CMD is handled by a content script that passes ctrl_held and ctrl_released
+// messages to this worker
+chrome.runtime.onMessage.addListener(message => {
+    switch (message) {
         case 'ctrl_held':
             setFavicons();
-            sendResponse(true);
             break;
         case 'ctrl_released':
             unsetFavicons();
-            sendResponse(false);
             break;
     }
 });
 
 // Onboarding
 chrome.runtime.onInstalled.addListener(({reason}) => {
-    if (reason !== 'install') return;
-
-    chrome.tabs.create({
-        url: 'onboarding.html'
-    });
+    if (reason === 'install') {
+        chrome.tabs.create({ url: 'onboarding/index.html' })
+            .then(_ => {
+                console.log('Opened onboarding tab');
+            });
+    }
+    chrome.tabs.query({})
+        .then(tabs => {
+            for (const tab of tabs) {
+                chrome.scripting.executeScript({
+                    target: {
+                        tabId: tab.id,
+                        allFrames: true
+                    },
+                    files: [
+                        'scripts/content.js'
+                    ]
+                })
+                    .then(_ => {
+                        console.log(`Injected script into tab "${tab.title}"`);
+                    })
+                    .catch(err => {
+                        console.error(`Failed to inject script into tab "${tab.title}":\n${err}`);
+                    });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+        })
 });
