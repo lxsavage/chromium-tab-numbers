@@ -1,8 +1,8 @@
 {
-  "manifest_version": 3,
   "name": "Tab Enumerator",
   "description": "Add a number to the first nine tabs to assist with keyboard navigation",
-  "version": "0.1",
+  "manifest_version": 3,
+  "version": "0.2.0",
   "permissions": [
     "tabs",
     "scripting"

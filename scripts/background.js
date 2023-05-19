@@ -55,8 +55,9 @@ chrome.runtime.onMessage.addListener(message => {
 
 // Onboarding
 chrome.runtime.onInstalled.addListener(({reason}) => {
+    
     if (reason === 'install') {
-        chrome.tabs.create({ url: 'onboarding/index.html' })
+        chrome.tabs.create({ url: 'onboarding/install.html' })
             .then(_ => {
                 console.log('Opened onboarding tab');
             });

@@ -11,7 +11,7 @@ const sendSetMsg = () => chrome.runtime.sendMessage('ctrl_held')
 
 function getFavicons() {
     let favicons = document.querySelectorAll("link[rel*='icon']");
-
+    
     if (favicons.length === 0) {
         const favicon = document.createElement('link');
         favicon.rel = 'icon';
