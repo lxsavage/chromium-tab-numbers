@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "clean-build": "rm -rf dist/;yarn build",
-    "build": "tsc && cp -r src/assets/. dist/"
+    "build": "npx tsc && cp -r src/assets/. dist/"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.236",

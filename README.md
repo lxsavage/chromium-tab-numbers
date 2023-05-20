@@ -27,7 +27,19 @@ unpacked extension:
 git clone https://github.com/lxsavage/chromium-tab-numbers.git ~/chromium-tab-numbers
 ```
 
-2. Navigate to `chrome://extensions`
-3. Enable the "Developer Mode" slider
-4. Click on "Load unpacked"
-    1. Navigate to the root of the cloned repo (in this case `~/chromium-tab-numbers`), then open it
+2. Install all packages with `npm` or `yarn`:
+
+```bash
+yarn install
+```
+
+3. Build the project:
+
+```bash
+yarn build # or npm run build
+```
+
+4. Navigate to `chrome://extensions`
+5. Enable the "Developer Mode" slider
+6. Click on "Load unpacked"
+    1. Navigate to the dist folder select it
