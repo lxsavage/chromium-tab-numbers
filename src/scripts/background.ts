@@ -53,13 +53,13 @@ chrome.runtime.onMessage.addListener((message) => {
 chrome.runtime.onInstalled.addListener(({reason}) => {
   if (reason === 'install') {
     chrome.tabs.create({url: 'onboarding/install.html'})
-      .then((_) => {
+      .then(() => {
         console.log('Opened onboarding tab');
       });
   }
   chrome.tabs.query({})
     .then((tabs) => {
-      for (const tab of tabs) {
+      tabs.forEach(tab => {
         chrome.scripting.executeScript({
           target: {
             tabId: tab.id as number,
@@ -69,13 +69,13 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
             'scripts/content.js',
           ],
         })
-          .then((_) => {
+          .then(() => {
             console.log(`Injected script into tab "${tab.title}"`);
           })
           .catch((err) => {
             console.error(`Failed to inject script into tab "${tab.title}":\n${err}`);
           });
-      }
+      });
     })
     .catch((err) => {
       console.error(err);
