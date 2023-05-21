@@ -1,20 +1,20 @@
 @font-face {
-    font-family: "Inter-Regular";
-    src: url("../assets/Inter-Regular.otf");
+  font-family: "Inter-Regular";
+  src: url("../assets/Inter-Regular.otf");
 }
 
 body {
-    font-family: "Inter-Regular", sans-serif;
-    font-size: 12pt;
-    background-color: #64748b; 
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 12pt;
+  background-color: #64748b;
 }
 
 .card {
-    display: block;
-    box-shadow: .5rem .5rem 1rem darkslategray;
-    margin: 5rem auto;
-    max-width: 600px;
-    border-radius: 12px;
-    background-color: whitesmoke;
-    padding: 5px 15px;
+  display: block;
+  box-shadow: .5rem .5rem 1rem darkslategray;
+  margin: 5rem auto;
+  max-width: 600px;
+  border-radius: 12px;
+  background-color: whitesmoke;
+  padding: 5px 15px;
 }
