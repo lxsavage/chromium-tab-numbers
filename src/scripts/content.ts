@@ -1,16 +1,36 @@
 const origHref: string[] = [];
 const isMac: boolean = window.navigator.userAgent.includes('Macintosh');
 
-async function sendSetMsg() {
+async function sendSetMsg(): Promise<void> {
   // Don't do anything if extension context is invalidated
   if (!chrome.runtime?.id) return;
   await chrome.runtime.sendMessage('ctrl_held')
 }
 
-async function sendUnsetMsg() {
+async function sendUnsetMsg(): Promise<void> {
   // Don't do anything if extension context is invalidated
   if (!chrome.runtime?.id) return;
   await chrome.runtime.sendMessage('ctrl_released');
+}
+
+function setPageFavicons(faviconUrl: string): void {
+  const favicons = getPageFavicons();
+  if (origHref.length > 0) return;
+
+  favicons.forEach((favicon) => {
+    origHref.push(favicon.href);
+    favicon.setAttribute('href', faviconUrl);
+  });
+}
+
+function unsetPageFavicons(): void {
+  const favicons = getPageFavicons();
+  if (origHref.length === 0) return;
+
+  favicons.forEach((favicon: Element, index: number) => {
+    favicon.setAttribute('href', origHref[index]);
+  });
+  origHref.length = 0;
 }
 
 function getPageFavicons(): NodeListOf<HTMLLinkElement> {
@@ -32,25 +52,7 @@ function isCtrlOrCmd(key: string): boolean {
   return (isMac && key === 'Meta') || (!isMac && key === 'Control');
 }
 
-function setPageFavicons(faviconUrl: string) {
-  const favicons = getPageFavicons();
-  if (origHref.length > 0) return;
-
-  favicons.forEach((favicon) => {
-    origHref.push(favicon.href);
-    favicon.setAttribute('href', faviconUrl);
-  });
-}
-
-function unsetPageFavicons() {
-  const favicons = getPageFavicons();
-  if (origHref.length === 0) return;
-
-  favicons.forEach((favicon: Element, index: number) => {
-    favicon.setAttribute('href', origHref[index]);
-  });
-  origHref.length = 0;
-}
+/* Event Listeners */
 
 document.addEventListener('visibilitychange', sendUnsetMsg);
 window.addEventListener('blur', sendUnsetMsg);

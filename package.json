@@ -5,15 +5,19 @@
   "author": "lxsavage <31578557+lxsavage@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "clean-build": "rm -rf dist/;yarn build",
-    "build": "npx tsc && cp -r src/assets/. dist/"
+    "clean-build": "yarn clean && yarn build",
+    "clean": "rimraf dist/",
+    "build": "npx tsc && yarn run copy-static",
+    "copy-static": "cpr src/static/. dist/"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.236",
     "coc-eslint": "^1.6.0",
+    "cpr": "^3.0.1",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
+    "rimraf": "^5.0.1",
     "typescript": "^5.0.4"
   }
 }
