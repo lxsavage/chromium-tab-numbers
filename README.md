@@ -36,12 +36,14 @@ git clone https://github.com/lxsavage/chromium-tab-numbers.git ~/chromium-tab-nu
 
 ```bash
 yarn install
+# or: npm i
 ```
 
 3. Build the project:
 
 ```bash
-yarn build # or npm run build
+yarn build
+# or: npm run build
 ```
 
 4. Navigate to `chrome://extensions`
