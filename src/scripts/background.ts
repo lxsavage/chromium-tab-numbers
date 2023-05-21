@@ -1,39 +1,29 @@
-function setFavicons() {
-  chrome.tabs.query({currentWindow: true})
-    .then((tabs) => {
-      tabs.forEach((tab, index) => {
-        let logicalIndex = index + 1;
-        if (tabs.length > 8 && index === tabs.length - 1) {
-          logicalIndex = 9;
-        } else if (index >= 8) return;
+async function setFavicons() {
+  const tabs = await chrome.tabs.query({currentWindow: true});
 
-        const icUrl = chrome.runtime.getURL(`images/n${logicalIndex}.png`);
+  tabs.forEach((tab, index) => {
+    let logicalIndex = index + 1;
+    if (tabs.length > 8 && index === tabs.length - 1) {
+      logicalIndex = 9;
+    } else if (index >= 8) return;
 
-        // TODO: Handle context invalidated
-        chrome.tabs.sendMessage(tab.id as number, {
-          action: 'set_favicon',
-          icon: icUrl
-        } as CTNMessage);
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    const icUrl = chrome.runtime.getURL(`images/n${logicalIndex}.png`);
+
+    chrome.tabs.sendMessage(tab.id as number, {
+      action: 'set_favicon',
+      icon: icUrl
+    } as CTNMessage);
+  });
 }
 
-function unsetFavicons() {
-  chrome.tabs.query({})
-    .then((tabs) => {
-      tabs.forEach(tab => {
-        // TODO: Handle context invalidated
-        chrome.tabs.sendMessage(tab.id as number, {
-          action: 'unset_favicon'
-        } as CTNMessage);
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+async function unsetFavicons() {
+  const tabs = await chrome.tabs.query({})
+
+  tabs.forEach(tab =>
+    chrome.tabs.sendMessage(tab.id as number, {
+      action: 'unset_favicon'
+    } as CTNMessage)
+  );
 }
 
 // Checking for the user holding CTRL/CMD is handled by a content script that
@@ -50,34 +40,28 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 // Onboarding
-chrome.runtime.onInstalled.addListener(({reason}) => {
+chrome.runtime.onInstalled.addListener(async ({reason}) => {
   if (reason === 'install') {
-    chrome.tabs.create({url: 'onboarding/install.html'})
-      .then(() => {
-        console.log('Opened onboarding tab');
-      });
+    await chrome.tabs.create({url: 'onboarding/install.html'})
+    console.log('Opened onboarding tab');
   }
-  chrome.tabs.query({})
-    .then((tabs) => {
-      tabs.forEach(tab => {
-        chrome.scripting.executeScript({
-          target: {
-            tabId: tab.id as number,
-            allFrames: true,
-          },
-          files: [
-            'scripts/content.js',
-          ],
-        })
-          .then(() => {
-            console.log(`Injected script into tab "${tab.title}"`);
-          })
-          .catch((err) => {
-            console.error(`Failed to inject script into tab "${tab.title}":\n${err}`);
-          });
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+
+  const tabs = await chrome.tabs.query({});
+  tabs.forEach(async (tab) => {
+    try {
+      await chrome.scripting.executeScript({
+        target: {
+          tabId: tab.id as number,
+          allFrames: true,
+        },
+        files: [
+          'scripts/content.js',
+        ],
+      })
+      console.log(`Injected script into tab "${tab.title}"`);
+    }
+    catch (err) {
+      console.error(`Failed to inject script into tab "${tab.title}":\n${err}`);
+    }
+  });
 });

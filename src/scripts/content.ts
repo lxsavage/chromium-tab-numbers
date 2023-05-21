@@ -1,20 +1,23 @@
 const origHref: string[] = [];
 const isMac: boolean = window.navigator.userAgent.includes('Macintosh');
 
-function sendSetMsg() {
-  // TODO: Handle context invalidated
-  chrome.runtime.sendMessage('ctrl_held')
+async function sendSetMsg() {
+  // Don't do anything if extension context is invalidated
+  if (!chrome.runtime?.id) return;
+  await chrome.runtime.sendMessage('ctrl_held')
 }
 
-function sendUnsetMsg() {
-  // TODO: Handle context invalidated
-  chrome.runtime.sendMessage('ctrl_released');
+async function sendUnsetMsg() {
+  // Don't do anything if extension context is invalidated
+  if (!chrome.runtime?.id) return;
+  await chrome.runtime.sendMessage('ctrl_released');
 }
 
-function getFavicons(): NodeListOf<HTMLLinkElement> {
+function getPageFavicons(): NodeListOf<HTMLLinkElement> {
   let favicons = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
 
-  if (favicons.length === 0) {
+  // If no favicons are found, create one and add it to the head
+  if (!favicons?.length ?? true) {
     const favicon = document.createElement('link');
     favicon.rel = 'icon';
     favicon.type = 'image/png';
@@ -29,8 +32,8 @@ function isCtrlOrCmd(key: string): boolean {
   return (isMac && key === 'Meta') || (!isMac && key === 'Control');
 }
 
-function setFavicon(faviconUrl: string) {
-  const favicons = getFavicons();
+function setPageFavicons(faviconUrl: string) {
+  const favicons = getPageFavicons();
   if (origHref.length > 0) return;
 
   favicons.forEach((favicon) => {
@@ -39,8 +42,8 @@ function setFavicon(faviconUrl: string) {
   });
 }
 
-function unsetFavicon() {
-  const favicons = getFavicons();
+function unsetPageFavicons() {
+  const favicons = getPageFavicons();
   if (origHref.length === 0) return;
 
   favicons.forEach((favicon: Element, index: number) => {
@@ -67,10 +70,10 @@ document.addEventListener('keyup', (evt) => {
 chrome.runtime.onMessage.addListener((message: CTNMessage) => {
   switch (message.action) {
     case 'set_favicon':
-      setFavicon(message.icon as string);
+      setPageFavicons(message.icon as string);
       break;
     case 'unset_favicon':
-      unsetFavicon();
+      unsetPageFavicons();
       break;
     default:
       break;
