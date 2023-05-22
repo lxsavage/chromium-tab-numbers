@@ -11,7 +11,7 @@
     "clean-dists": "rimraf dist.chrome/ && rimraf dist.firefox/",
     "copy-static": "cpr src/static/ dist.chrome/ && cpr src/static dist.firefox/",
     "copy-build": "cpr build/ dist.chrome/ && cpr build/ dist.firefox/",
-    "set-chrome-manifest": "mv dist.chrome/manifest.chrome.json dist.chrome/manifest.json && rimraf dist.chrome/manifest.webex.json",
+    "set-chrome-manifest": "mv dist.chrome/manifest.chrome.json dist.chrome/manifest.json && rimraf dist.chrome/manifest.firefox.json",
     "set-firefox-manifest": "mv dist.firefox/manifest.firefox.json dist.firefox/manifest.json && rimraf dist.firefox/manifest.chrome.json"
   },
   "devDependencies": {
