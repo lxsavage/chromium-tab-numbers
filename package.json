@@ -5,10 +5,14 @@
   "author": "lxsavage <31578557+lxsavage@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "clean-build": "yarn clean && yarn build",
-    "clean": "rimraf dist/",
-    "build": "tsc && yarn run copy-static",
-    "copy-static": "cpr src/static/. dist/"
+    "clean": "yarn run clean-dists && rimraf build/",
+    "build": "yarn run clean-dists && tsc && yarn run copy-static && yarn run copy-build && yarn run set-chrome-manifest && yarn run set-firefox-manifest",
+    "rebuild": "yarn clean && yarn build",
+    "clean-dists": "rimraf dist.chrome/ && rimraf dist.firefox/",
+    "copy-static": "cpr src/static/ dist.chrome/ && cpr src/static dist.firefox/",
+    "copy-build": "cpr build/ dist.chrome/ && cpr build/ dist.firefox/",
+    "set-chrome-manifest": "mv dist.chrome/manifest.chrome.json dist.chrome/manifest.json && rimraf dist.chrome/manifest.webex.json",
+    "set-firefox-manifest": "mv dist.firefox/manifest.firefox.json dist.firefox/manifest.json && rimraf dist.firefox/manifest.chrome.json"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.236",
@@ -17,6 +21,7 @@
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
+    "mkdirp": "^3.0.1",
     "rimraf": "^5.0.1",
     "typescript": "^5.0.4"
   }

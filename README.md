@@ -46,7 +46,19 @@ yarn build
 # or: npm run build
 ```
 
-4. Navigate to `chrome://extensions`
-5. Enable the "Developer Mode" slider
-6. Click on "Load unpacked"
-7. Navigate to the dist folder select it
+### Chrome Installation
+
+1. Navigate to `chrome://extensions`
+2. Enable the "Developer Mode" slider
+3. Click on "Load unpacked"
+4. Click on open after navigating to the `dist.chrome/` folder
+
+### Firefox Installation
+
+Note that due to the unsigned nature of this extension, it needs to be re-added
+every time firefox is restarted (this is a limitation of the browser itself, so
+I can't work around it).
+
+1. Navigate to `about:debugging#/runtime/this-firefox`
+2. Click on "Load Temporary Add-on..."
+3. Select `dist.firefox/manifest.json`
