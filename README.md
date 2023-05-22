@@ -32,18 +32,16 @@ into extension dev mode, and load the unpacked extension:
 git clone https://github.com/lxsavage/chromium-tab-numbers.git ~/chromium-tab-numbers
 ```
 
-2. Install all packages with `npm` or `yarn`:
+2. Install all packages with `yarn`:
 
 ```bash
 yarn install
-# or: npm i
 ```
 
 3. Build the project:
 
 ```bash
 yarn build
-# or: npm run build
 ```
 
 ### Chrome Installation
