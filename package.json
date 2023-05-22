@@ -7,7 +7,7 @@
   "scripts": {
     "clean-build": "yarn clean && yarn build",
     "clean": "rimraf dist/",
-    "build": "npx tsc && yarn run copy-static",
+    "build": "tsc && yarn run copy-static",
     "copy-static": "cpr src/static/. dist/"
   },
   "devDependencies": {

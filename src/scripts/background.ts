@@ -17,7 +17,7 @@ async function setFavicons() {
 }
 
 async function unsetFavicons() {
-  const tabs = await chrome.tabs.query({})
+  const tabs = await chrome.tabs.query({});
 
   tabs.forEach(tab =>
     chrome.tabs.sendMessage(tab.id as number, {
@@ -46,6 +46,7 @@ chrome.runtime.onInstalled.addListener(async ({reason}) => {
     console.log('Opened onboarding tab');
   }
 
+  // Script injection (to allow for usage without refreshing all tabs)
   const tabs = await chrome.tabs.query({});
   tabs.forEach(async (tab) => {
     try {
