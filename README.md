@@ -1,4 +1,4 @@
-# Chromium Tab Numbers
+# The Tab Enumerator
 
 ## Background
 
