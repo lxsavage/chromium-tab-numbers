@@ -27,8 +27,8 @@ into extension dev mode, and load the unpacked extension:
 
 There are two different versions of the extension: one for Chromium-based
 browsers (Chrome, Edge, Brave, etc.), and one for non-Chromium browsers that
-don't support all of the Manifest V3 features, and as a result use Manifest V2
-WebExtensions API for compatibility.
+don't support all of the Manifest V3 features (Firefox), and as a result use
+the Manifest V2 WebExtensions API for compatibility.
 
 1. Extract the corresponding release zip file to a safe location (a home
    directory is a good place for it, since the unzipped folder needs to be
