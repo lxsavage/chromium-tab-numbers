@@ -14,7 +14,15 @@ const queryTabs = chrome.runtime.getManifest().manifest_version === 3
   };
 
 async function setFavicons() {
-  const tabs = await queryTabs({currentWindow: true});
+  const tabGroups = await chrome.tabGroups.query({});
+  const tabs = (await queryTabs({
+    currentWindow: true,
+  })).filter(tab => {
+    if (tab.groupId === -1) return true;
+
+    const tabGroup = tabGroups.find((group) => group.id === tab.groupId);
+    return !tabGroup || !tabGroup.collapsed;
+  });
 
   tabs.forEach((tab, index) => {
     // Don't set the favicon if there are more than 8 tabs and the current tab
