@@ -1,5 +1,7 @@
+const isManifest3 = chrome.runtime.getManifest().manifest_version === 3;
+
 // Polyfill for Firefox manifest v2 workaround, making query function promise-based
-const queryTabs = chrome.runtime.getManifest().manifest_version === 3
+const queryTabs = isManifest3
   ? chrome.tabs.query
   : function (queryInfo: chrome.tabs.QueryInfo): Promise<chrome.tabs.Tab[]> {
     return new Promise((resolve, reject) => {
@@ -15,7 +17,7 @@ const queryTabs = chrome.runtime.getManifest().manifest_version === 3
 
 // Polyfill to handle tab groups in Firefox (not supported in manifest v2, so
 // just returns an empty array)
-const getTabGroups = chrome.runtime.getManifest().manifest_version === 3
+const getTabGroups = isManifest3
   ? async () => await chrome.tabGroups.query({})
   : async () => [];
 
