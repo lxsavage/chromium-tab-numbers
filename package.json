@@ -1,6 +1,6 @@
 {
-  "name": "chromium-tab-numbers",
-  "version": "0.1.0",
+  "name": "the-tab-enumerator",
+  "version": "0.2.1",
   "repository": "https://github.com/lxsavage/chromium-tab-numbers.git",
   "author": "lxsavage <31578557+lxsavage@users.noreply.github.com>",
   "license": "MIT",

@@ -2,7 +2,7 @@
   "name": "The Tab Enumerator",
   "description": "Add a number to the first nine tabs to assist with keyboard navigation",
   "manifest_version": 3,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "permissions": [
     "tabs",
     "tabGroups",
