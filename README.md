@@ -53,6 +53,10 @@ yarn build
 
 ### Firefox Installation
 
+A separate `dist.firefox/` directory is generated for Firefox browsers since
+they do not properly implement the background Service Worker API from manifest
+V3, therefore it has a different manifest that will utilize V2 instead.
+
 Note that due to the unsigned nature of this extension, it needs to be re-added
 every time firefox is restarted (this is a limitation of the browser itself, so
 I can't work around it).

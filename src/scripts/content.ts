@@ -2,13 +2,11 @@ const origHref: string[] = [];
 const isMac: boolean = window.navigator.userAgent.includes('Macintosh');
 
 async function sendSetMsg(): Promise<void> {
-  // Don't do anything if extension context is invalidated
   if (!chrome.runtime?.id) return;
   await chrome.runtime.sendMessage('ctrl_held');
 }
 
 async function sendUnsetMsg(): Promise<void> {
-  // Don't do anything if extension context is invalidated
   if (!chrome.runtime?.id) return;
   await chrome.runtime.sendMessage('ctrl_released');
 }
