@@ -13,12 +13,18 @@ const queryTabs = chrome.runtime.getManifest().manifest_version === 3
     });
   };
 
+// Polyfill to handle tab groups in Firefox (not supported in manifest v2, so
+// just returns an empty array)
+const getTabGroups = chrome.runtime.getManifest().manifest_version === 3
+  ? async () => await chrome.tabGroups.query({})
+  : async () => [];
+
 async function setFavicons() {
-  const tabGroups = await chrome.tabGroups.query({});
+  const tabGroups = await getTabGroups();
   const tabs = (await queryTabs({
     currentWindow: true,
   })).filter(tab => {
-    if (tab.groupId === -1) return true;
+    if (!tab.groupId || tab.groupId === -1) return true;
 
     const tabGroup = tabGroups.find((group) => group.id === tab.groupId);
     return !tabGroup || !tabGroup.collapsed;
